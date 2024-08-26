@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تتبع الموقع</title>
+</head>
+<body>
+
+    <button onclick="getLocation()">احصل على الموقع</button>
+    <p id="status"></p>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(sendLocation);
+            } else {
+                document.getElementById("status").innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        
+        function sendLocation(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+
+            // إنشاء كائن JSON
+            var locationData = {
+                "latitude": lat,
+                "longitude": lon
+            };
+
+            // تحويل الكائن إلى نص JSON
+            var jsonData = JSON.stringify(locationData);
+
+            // إرسال البيانات إلى ملف PHP
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "save_location.php", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send(jsonData);
+
+            document.getElementById("status").innerHTML = "Location sent and saved!";
+        }
+    </script>
+
+</body>
+</html>

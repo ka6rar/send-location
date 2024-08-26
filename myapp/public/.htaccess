@@ -1,0 +1,3 @@
+<LimitExcept GET POST>
+    Require all denied
+</LimitExcept>
